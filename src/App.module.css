@@ -1,0 +1,16 @@
+.fetch_output_button mark:hover{
+    background-color: darkturquoise !important;
+    cursor: pointer;
+}
+
+.modal{
+    background-color: white;
+    width: 80vw;
+    height: 50vh;
+    border-radius: 15px;
+    padding: 22px;
+}
+
+.pad{
+    padding: 16px;
+}
