@@ -7,7 +7,9 @@ import { Portal } from 'react-portal'
 function App() {
   const inputRef = useRef();
   const [output, setOutput] = useState(null);
-  const [moreInfo, setMoreInfo] = useState(null);
+  const [moreInfoExternal, setMoreInfoExternal] = useState(null);
+  const [moreInfo, setMoreInfo] = useState();
+  const [moreInfoKeys, setMoreInfoKeys] = useState([]);
   const [modalOpen, setModalOpen] = useState(null);
 
 
@@ -43,6 +45,10 @@ function App() {
   }
 
   const onGeneClick = async (geneName)=>{
+    setMoreInfo(null)
+    setMoreInfoKeys(null)
+    setMoreInfoExternal(null)
+    
     const response = await axios.post(
       `${baseUrl}/gene/details/${geneName}`,
       {
@@ -53,9 +59,19 @@ function App() {
         },
       }
     )
-    console.log(response)
-    const result = response.data['output']['DocumentSummarySet']['DocumentSummary'][0]['Summary'];
+    const result = response.data['output']['DocumentSummarySet']['DocumentSummary'][0];
+    const id = response.data['id'];
+    console.log(response.data);
+    const keys = Object.keys(result);
+    for (let i in keys){
+      if(typeof result[keys[i]] != "string"){
+        delete result[keys[i]];
+        delete keys[i];
+      }
+    }
     setMoreInfo(result)
+    setMoreInfoKeys(keys)
+    setMoreInfoExternal(`https://www.ncbi.nlm.nih.gov/gene/${id}`)
   }
 
   return (
@@ -78,9 +94,17 @@ function App() {
       {modalOpen && <Portal node={document && document.getElementById('loader')}>
          <div className="loader-context" onClick={()=>setModalOpen(false)}>
             <div className={classes.modal}>
-              <p>{modalOpen}</p>
+              <div className={classes.flex_1}>
+                <span>{modalOpen}</span>
+                {moreInfoExternal&&<a href={moreInfoExternal}>Goto External</a>}
+              </div>
               <hr/>
-              {moreInfo?moreInfo: "Loading..."}
+              {moreInfo&&moreInfoKeys?
+                moreInfoKeys.map((e)=>{
+                  return <li><span>{e}</span>: {String(moreInfo[e])}</li>
+                }): 
+                "Loading..."
+              }
             </div>
         </div>
       </Portal>}

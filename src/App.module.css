@@ -9,8 +9,29 @@
     height: 50vh;
     border-radius: 15px;
     padding: 22px;
+    overflow: scroll;
+    margin: 8px;
+}
+
+.modal li span{
+    font-weight: 800;
+}
+
+.modal li{
+    padding-bottom: 8px    
+}
+
+.modal span{
+    font-weight: 900;
 }
 
 .pad{
     padding: 16px;
+}
+
+.flex_1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
 }
