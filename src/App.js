@@ -38,7 +38,6 @@ function App() {
     const el = e.target.closest("mark");
     if (el && e.currentTarget.contains(el)) {
       const elementName = el.innerText.split(" ")[0];
-      setMoreInfo(null);
       setModalOpen(elementName);
       onGeneClick(elementName);
     } 
@@ -72,6 +71,66 @@ function App() {
     setMoreInfo(result)
     setMoreInfoKeys(keys)
     setMoreInfoExternal(`https://www.ncbi.nlm.nih.gov/gene/${id}`)
+  }
+
+  const onProteinClick = async (proteinName)=>{
+    setMoreInfo(null)
+    setMoreInfoKeys(null)
+    setMoreInfoExternal(null)
+    
+    const response = await axios.post(
+      `${baseUrl}/protein/details/${proteinName}`,
+      {
+        header: {
+            'Content-Type':'application/json',
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+      }
+    )
+    const result = response.data['output'][0];
+    const id = response.data['id'];
+    console.log(response.data);
+    const keys = Object.keys(result);
+    for (let i in keys){
+      if(typeof result[keys[i]] != "string"){
+        delete result[keys[i]];
+        delete keys[i];
+      }
+    }
+    setMoreInfo(result)
+    setMoreInfoKeys(keys)
+    setMoreInfoExternal(`https://www.ncbi.nlm.nih.gov/protein/${id}`)
+  }
+
+  const onDrugClick = async (drugName)=>{
+    setMoreInfo(null)
+    setMoreInfoKeys(null)
+    setMoreInfoExternal(null)
+    
+    const response = await axios.post(
+      `${baseUrl}/drug/details/${drugName}`,
+      {
+        header: {
+            'Content-Type':'application/json',
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+      }
+    )
+    const result = response.data['output'];
+    const id = response.data['id'];
+    console.log(response.data);
+    const keys = Object.keys(result);
+    for (let i in keys){
+      if(typeof result[keys[i]] == "object"){
+        delete result[keys[i]];
+        delete keys[i];
+      }
+    }
+    setMoreInfo(result)
+    setMoreInfoKeys(keys)
+    setMoreInfoExternal(`https://www.ebi.ac.uk/chembl/document_report_card/${id}`)
   }
 
   return (
