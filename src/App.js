@@ -11,6 +11,7 @@ function App() {
   const [moreInfo, setMoreInfo] = useState();
   const [moreInfoKeys, setMoreInfoKeys] = useState([]);
   const [modalOpen, setModalOpen] = useState(null);
+  const [fetchType, setFetchType] = useState(null);
 
 
   const onFetchGene = async (e)=>{
@@ -29,6 +30,28 @@ function App() {
       }
     );
     let content = response.data['output'];
+    setFetchType('gene');
+    setOutput(content);
+    console.log(response);
+  }
+
+  const onFetchDrug = async (e)=>{
+    e.preventDefault();
+    const input = inputRef.current.value;
+    
+    const response = await axios.post(
+      `${baseUrl}/drug`,
+      {
+        header: {
+            'Content-Type':'application/json',
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        input: input
+      }
+    );
+    let content = response.data['output'];
+    setFetchType('drug');
     setOutput(content);
     console.log(response);
   }
@@ -37,9 +60,22 @@ function App() {
     e.preventDefault();
     const el = e.target.closest("mark");
     if (el && e.currentTarget.contains(el)) {
-      const elementName = el.innerText.split(" ")[0];
+      console.log(el.innerText.split(" ").slice(0, -1))
+      const elementName = el.innerText.split(" ").slice(0, -1).join(" ");
       setModalOpen(elementName);
-      onGeneClick(elementName);
+      switch (fetchType) {
+        case "gene":
+          onGeneClick(elementName);
+          break;
+        case "drug":
+          onDrugClick(elementName);
+          break;
+        case "protein":
+          onProteinClick(elementName);
+          break;
+        default:
+          break;
+      }
     } 
   }
 
@@ -143,7 +179,7 @@ function App() {
         <br/>
         <br/>
         <input type="button" value="Gene Fetch" onClick={onFetchGene}/>
-        <input type="button" value="Drug Fetch"/>
+        <input type="button" value="Drug Fetch" onClick={onFetchDrug}/>
         <input type="button" value="Protein Fetch"/>
         <input type="button" value="Reuseable Drug"/>
       </form>
