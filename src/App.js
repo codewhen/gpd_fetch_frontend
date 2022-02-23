@@ -3,6 +3,10 @@ import axios from 'axios'
 import { baseUrl } from "./config";
 import classes from "./App.module.css"
 import { Portal } from 'react-portal'
+import { css } from "@emotion/react";
+import { BounceLoader } from "react-spinners";
+
+//BCL2 is a gene. Lithium and Ortho Evra are some drugs. Lo Loestrin Fe is for birth control. Depo-Provera is dash separated
 
 function App() {
   const inputRef = useRef();
@@ -12,9 +16,13 @@ function App() {
   const [moreInfoKeys, setMoreInfoKeys] = useState([]);
   const [modalOpen, setModalOpen] = useState(null);
   const [fetchType, setFetchType] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const onFetchGene = async (e)=>{
+    const timer = setTimeout(() => {
+      setIsLoading(true);
+    }, 200);
     e.preventDefault();
     const input = inputRef.current.value;
     
@@ -32,10 +40,15 @@ function App() {
     let content = response.data['output'];
     setFetchType('gene');
     setOutput(content);
+    clearTimeout(timer);
+    setIsLoading(false);
     console.log(response);
   }
 
   const onFetchDrug = async (e)=>{
+    const timer = setTimeout(() => {
+      setIsLoading(true);
+    }, 200);
     e.preventDefault();
     const input = inputRef.current.value;
     
@@ -54,14 +67,67 @@ function App() {
     setFetchType('drug');
     setOutput(content);
     console.log(response);
+    clearTimeout(timer);
+    setIsLoading(false);
+  }
+
+  const onFetchProtein = async (e)=>{
+    const timer = setTimeout(() => {
+      setIsLoading(true);
+    }, 200);    e.preventDefault();
+    const input = inputRef.current.value;
+    
+    const response = await axios.post(
+      `${baseUrl}/protein`,
+      {
+        header: {
+            'Content-Type':'application/json',
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        input: input
+      }
+    );
+    let content = response.data['output'];
+    setFetchType('protein');
+    setOutput(content);
+    console.log(response);
+    clearTimeout(timer);
+    setIsLoading(false);
+  }
+
+  const onReuseDrug = async (e)=>{
+    setIsLoading(true);
+    e.preventDefault();
+    const input = inputRef.current.value;
+    
+    const response = await axios.post(
+      `${baseUrl}/reuse_drug`,
+      {
+        header: {
+            'Content-Type':'application/json',
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        input: input
+      }
+    );
+    let content = response.data['output'];
+    content = content.map((e)=>{
+      return `<li>${e}</li>`
+    }).join(" ")
+    setFetchType('reuse_drug');
+    setOutput(content);
+    console.log(response);
+    setIsLoading(false);
   }
 
   const clickHandler =(e)=>{
     e.preventDefault();
     const el = e.target.closest("mark");
     if (el && e.currentTarget.contains(el)) {
-      console.log(el.innerText.split(" ").slice(0, -1))
-      const elementName = el.innerText.split(" ").slice(0, -1).join(" ");
+      const elementName = (el.innerText.split(" ").slice(0, -2)).join(" ");
+      console.log(elementName)
       setModalOpen(elementName);
       switch (fetchType) {
         case "gene":
@@ -180,8 +246,8 @@ function App() {
         <br/>
         <input type="button" value="Gene Fetch" onClick={onFetchGene}/>
         <input type="button" value="Drug Fetch" onClick={onFetchDrug}/>
-        <input type="button" value="Protein Fetch"/>
-        <input type="button" value="Reuseable Drug"/>
+        <input type="button" value="Protein Fetch" onClick={onFetchProtein}/>
+        <input type="button" value="Reuseable Drug" onClick={onReuseDrug}/>
       </form>
       <br/>
       <h1>Output</h1>
@@ -201,6 +267,11 @@ function App() {
                 "Loading..."
               }
             </div>
+        </div>
+      </Portal>}
+      {isLoading && <Portal node={document && document.getElementById('loader')}>
+        <div className="loader-context">
+        <BounceLoader color={"#ffffff"} loading={true} size={60} />
         </div>
       </Portal>}
     </div>
