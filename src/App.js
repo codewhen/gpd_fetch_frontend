@@ -126,7 +126,7 @@ function App() {
     e.preventDefault();
     const el = e.target.closest("mark");
     if (el && e.currentTarget.contains(el)) {
-      const elementName = (el.innerText.split(" ").slice(0, -2)).join(" ");
+      const elementName = (el.innerText.trim().split(" ").slice(0, -1)).join(" ");
       console.log(elementName)
       setModalOpen(elementName);
       switch (fetchType) {
