@@ -3,7 +3,6 @@ import axios from 'axios'
 import { baseUrl } from "./config";
 import classes from "./App.module.css"
 import { Portal } from 'react-portal'
-import { css } from "@emotion/react";
 import { BounceLoader } from "react-spinners";
 
 //BCL2 is a gene. Lithium and Ortho Evra are some drugs. Lo Loestrin Fe is for birth control. Depo-Provera is dash separated
@@ -236,21 +235,26 @@ function App() {
   }
 
   return (
-    <div className={`App ${classes.pad}`}>
-      <h1> DDH-TM </h1>
-      <br/>
-      <br/>
-      <form action="drug" method="post">
-        <textarea ref={inputRef} rows="4" cols="50" type="text"></textarea>
-        <br/>
-        <br/>
-        <input type="button" value="Gene Fetch" onClick={onFetchGene}/>
-        <input type="button" value="Drug Fetch" onClick={onFetchDrug}/>
-        <input type="button" value="Protein Fetch" onClick={onFetchProtein}/>
-        <input type="button" value="Reuseable Drug" onClick={onReuseDrug}/>
-      </form>
-      <br/>
-      <h1>Output</h1>
+    <div className={`App`}>
+        <nav className={classes.nav}>
+          <span>DDH TM-1</span>
+          <ul>
+            <li><a className="active" href="/">Home</a></li>
+            <li><a href="api">API</a></li>
+          </ul>
+        </nav>
+        <form action="drug" method="post">
+          <div className={classes.inputTile}>
+            <textarea className={classes._input_} ref={inputRef} type="text"></textarea>
+            <div className={classes.buttonTile}>
+              <input className={classes.btn} type="button" value="Gene Fetch" onClick={onFetchGene}/>
+              <input className={classes.btn} type="button" value="Drug Fetch" onClick={onFetchDrug}/>
+              <input className={classes.btn} type="button" value="Protein Fetch" onClick={onFetchProtein}/>
+              <input className={classes.btn} type="button" value="Reuseable Drug" onClick={onReuseDrug}/>
+            </div>
+          </div>
+        </form>
+      <h1 className={classes.output_lbl}>Output</h1>
       <div className={classes.fetch_output_button} onClick={clickHandler} dangerouslySetInnerHTML={{ __html: output }} />
       {modalOpen && <Portal node={document && document.getElementById('loader')}>
          <div className="loader-context" onClick={()=>setModalOpen(false)}>
@@ -262,7 +266,7 @@ function App() {
               <hr/>
               {moreInfo&&moreInfoKeys?
                 moreInfoKeys.map((e)=>{
-                  return <li><span>{e}</span>: {String(moreInfo[e])}</li>
+                  return <li key={e}><span>{e}</span>: {String(moreInfo[e])}</li>
                 }): 
                 "Loading..."
               }

@@ -1,6 +1,20 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: #f8f8f8;
+    text-align: left; 
+}
+
 .fetch_output_button mark:hover{
     background-color: darkturquoise !important;
     cursor: pointer;
+}
+
+.fetch_output_button{
+    padding: 0px 22px;
 }
 
 .modal{
@@ -11,6 +25,17 @@
     padding: 22px;
     overflow: scroll;
     margin: 8px;
+}
+
+.flex_1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.modal hr{
+    margin: 8px 0px;
 }
 
 .modal li span{
@@ -25,13 +50,98 @@
     font-weight: 900;
 }
 
-.pad{
-    padding: 16px;
-}
 
-.flex_1{
+.inputTile{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
+    align-items: flex-start;
+    margin: 22px;
 }
+
+.buttonTile{
+    display: grid;
+    grid-template-columns: 160px 160px;
+    grid-column-gap: 20px;
+    grid-row-gap: 25px;
+}
+
+._input_{
+    width: calc( 100% - 16px );;
+    height: 150px;
+    margin-right: 20px;
+    border: solid;
+    border-color: gray;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+.btn{
+    height: 65px;
+    background-color: #4A3CED;
+    text-align: center;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: 0.3s;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+}
+
+.nav{
+    padding: 22px;
+    background-color: #4A3CED;
+    box-shadow: -2px 3px 6px 0px #0000000f;}
+
+.nav span{
+    font-size: 36px;
+    font-weight: 600;
+    color: white;
+}
+
+.nav ul{
+    list-style-type: none;
+    display: flex;
+    padding-top: 8px;
+}
+
+.nav ul li{
+    padding-right: 16px;
+}
+
+.nav ul li a{
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.output_lbl{
+    padding: 22px;
+    color: #4A3CED;
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 740px) {
+    .buttonTile{
+        grid-template-columns: 160px !important;
+    }
+    ._input_{
+        height: 320px !important;
+    }
+}
+
+@media screen and (max-width: 440px) {
+    .buttonTile{
+        grid-template-columns: 160px 160px!important;
+    }
+    ._input_{
+        height: 150px !important;
+        margin-bottom: 21px;
+    }
+    .inputTile{
+        flex-direction: column !important;
+    }
+}
+ 
