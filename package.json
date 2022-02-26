@@ -9,6 +9,7 @@
     "axios": "^0.25.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-helmet": "^6.1.0",
     "react-loader-spinner": "^5.1.4",
     "react-portal": "^4.2.1",
     "react-scripts": "5.0.0",

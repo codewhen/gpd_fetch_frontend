@@ -4,6 +4,7 @@ import { baseUrl } from "./config";
 import classes from "./App.module.css"
 import { Portal } from 'react-portal'
 import { BounceLoader } from "react-spinners";
+import { Helmet } from "react-helmet";
 
 //BCL2 is a gene. Lithium and Ortho Evra are some drugs. Lo Loestrin Fe is for birth control. Depo-Provera is dash separated
 
@@ -236,6 +237,12 @@ function App() {
 
   return (
     <div className={`App`}>
+      <Helmet>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <title>Reuseable Drugs</title>
+      </Helmet>
         <nav className={classes.nav}>
           <span>DDH TM-1</span>
           <ul>
