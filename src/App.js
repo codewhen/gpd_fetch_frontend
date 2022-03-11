@@ -38,11 +38,16 @@ function App() {
       }
     );
     let content = response.data['output'];
+    let isNoResult = response.data['isNoResult'];
+    
     setFetchType('gene');
     setOutput(content);
     clearTimeout(timer);
     setIsLoading(false);
     console.log(response);
+    if(isNoResult){
+      alert("No gene found");
+    }
   }
 
   const onFetchDrug = async (e)=>{
@@ -64,11 +69,15 @@ function App() {
       }
     );
     let content = response.data['output'];
+    let isNoResult = response.data['isNoResult'];
     setFetchType('drug');
     setOutput(content);
     console.log(response);
     clearTimeout(timer);
     setIsLoading(false);
+    if(isNoResult){
+      alert("No drug found");
+    }
   }
 
   const onFetchProtein = async (e)=>{
@@ -89,11 +98,15 @@ function App() {
       }
     );
     let content = response.data['output'];
+    let isNoResult = response.data['isNoResult'];
     setFetchType('protein');
     setOutput(content);
     console.log(response);
     clearTimeout(timer);
     setIsLoading(false);
+    if(isNoResult){
+      alert("No protein found");
+    }
   }
 
   const onReuseDrug = async (e)=>{
@@ -244,10 +257,10 @@ function App() {
         <title>Reuseable Drugs</title>
       </Helmet>
         <nav className={classes.nav}>
-          <span>DDH TM-1</span>
+          <span>Drug reuse and fetching</span>
           <ul>
             <li><a className="active" href="/">Home</a></li>
-            <li><a href="api">API</a></li>
+            <li><a href="https://documenter.getpostman.com/view/12787044/UVsHTnqt">API</a></li>
           </ul>
         </nav>
         <form action="drug" method="post">
